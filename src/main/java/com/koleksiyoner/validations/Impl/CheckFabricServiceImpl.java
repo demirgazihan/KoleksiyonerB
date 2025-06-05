@@ -11,7 +11,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -28,14 +30,14 @@ public class CheckFabricServiceImpl implements CheckFabricService {
 
     @Override
     public void checkFabricsExistsByCode(List<FabricRequest> fabricRequests) {
+        List<String> errorMessageList = new ArrayList<>();
         List<Fabric> fabrics = fabricRepository.findAll();
         List<Fabric> matchingCodes = fabrics.stream().filter(element ->
-                fabricRequests.stream().anyMatch(f -> f.getCode().equals(element.getCode()))).toList();
-        List<String> errorMessageList = new ArrayList<>();
+                fabricRequests.stream().anyMatch(f -> (f.getCode().equals(element.getCode()) && f.getName().equals(element.getName())))).toList();
         matchingCodes.forEach(fabric -> {
             errorMessageList.add(fabric.getCode());
         });
-        if (!matchingCodes.isEmpty()) {
+        if (!errorMessageList.isEmpty()) {
             throw new BaseException(new ErrorMessage(ExceptionMessage.FABRICS_ARE_ALREADY_ADDED, String.join(" , ", errorMessageList)));
         }
     }

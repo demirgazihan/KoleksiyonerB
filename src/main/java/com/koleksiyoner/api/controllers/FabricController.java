@@ -1,6 +1,7 @@
 package com.koleksiyoner.api.controllers;
 
 import com.koleksiyoner.api.requests.BaseListRequest;
+import com.koleksiyoner.api.requests.fabric.FabricListRequest;
 import com.koleksiyoner.api.requests.fabric.FabricRequest;
 import com.koleksiyoner.api.responses.fabric.FabricGroupByNameResponse;
 import com.koleksiyoner.api.responses.fabric.FabricResponse;
@@ -24,8 +25,8 @@ public class FabricController {
 
 
     @GetMapping(FABRIC_FIND_GROUP_BY_NAME)
-    public ResponseEntity<DataResult<List<FabricGroupByNameResponse>>> getFabricsGroupByName() {
-        DataResult<List<FabricGroupByNameResponse>> result = fabricService.getFabricsGroupByName();
+    public ResponseEntity<DataResult<List<FabricGroupByNameResponse>>> getFabricsGroupByName(@RequestBody BaseListRequest baseListRequest) {
+        DataResult<List<FabricGroupByNameResponse>> result = fabricService.getFabricsGroupByName(baseListRequest);
         return new ResponseEntity<>(result, result.getHttpStatus());
     }
     @GetMapping(FABRIC_FIND_ALL)
@@ -35,8 +36,8 @@ public class FabricController {
     }
 
     @GetMapping(FABRIC_FIND_ALL_BY_NAME)
-    public ResponseEntity<DataResult<List<FabricResponse>>> findAllByName(@RequestBody FabricRequest fabricRequest) {
-        DataResult<List<FabricResponse>> result = fabricService.findAllByName(fabricRequest);
+    public ResponseEntity<DataResult<List<FabricResponse>>> findAllByName(@RequestBody FabricListRequest fabricListRequest) {
+        DataResult<List<FabricResponse>> result = fabricService.findAllByName(fabricListRequest);
         return new ResponseEntity<>(result, result.getHttpStatus());
     }
 

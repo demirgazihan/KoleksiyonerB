@@ -1,6 +1,7 @@
 package com.koleksiyoner.services.fabric.Impl;
 
 import com.koleksiyoner.api.requests.BaseListRequest;
+import com.koleksiyoner.api.requests.fabric.FabricListRequest;
 import com.koleksiyoner.api.requests.fabric.FabricRequest;
 import com.koleksiyoner.api.responses.fabric.FabricGroupByNameResponse;
 import com.koleksiyoner.api.responses.fabric.FabricResponse;
@@ -42,24 +43,25 @@ public class FabricServiceImpl implements FabricService {
     }
 
     @Override
-    public DataResult<List<FabricGroupByNameResponse>> getFabricsGroupByName() {
+    public DataResult<List<FabricGroupByNameResponse>> getFabricsGroupByName(BaseListRequest baseListRequest) {
         return new SuccessDataResult<>(
-                prepareFabricGroupByNameResponse(fabricRepository.getFabricsGroupByName()),
+                prepareFabricGroupByNameResponse(fabricRepository.getFabricsGroupByName(preparePageable(baseListRequest.getPageNo(), baseListRequest.getPageSize()))),
                 HttpStatus.OK);
     }
 
 
     @Override
-    public DataResult<List<FabricResponse>> findAllByName(FabricRequest fabricRequest) {
+    public DataResult<List<FabricResponse>> findAllByName(FabricListRequest fabricListRequest) {
         return new SuccessDataResult<>(
-                prepareFabricListByName(fabricRepository.findAllByName(fabricRequest.getName())),
+                prepareFabricListByName(fabricRepository.findAllByName(fabricListRequest.getName(),
+                        preparePageable(fabricListRequest.getPageNo(), fabricListRequest.getPageSize()))),
                 HttpStatus.OK);
     }
 
     @Override
     public DataResult<List<FabricResponse>> findAll(BaseListRequest baseListRequest) {
-        Pageable pageable = PageRequest.of(baseListRequest.getPageNo(), baseListRequest.getPageSize());
-        List<Fabric> fabrics = fabricRepository.findAll(pageable).getContent();
+        List<Fabric> fabrics = fabricRepository.findAll(preparePageable(baseListRequest.getPageNo(),
+                baseListRequest.getPageSize())).getContent();
         return new SuccessDataResult<>(fabrics.stream()
                 .map(fabric -> this.modelMapperService.forResponse()
                         .map(fabric, FabricResponse.class)).collect(Collectors.toList()), HttpStatus.OK);
@@ -110,5 +112,9 @@ public class FabricServiceImpl implements FabricService {
             fabricResponses.add(modelMapperService.forResponse().map(fabric, FabricResponse.class));
         });
         return fabricResponses;
+    }
+
+    private Pageable preparePageable(int pageNo, int pageSize) {
+        return PageRequest.of(pageNo, pageSize);
     }
 }

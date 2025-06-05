@@ -1,6 +1,7 @@
 package com.koleksiyoner.services.fabric;
 
 import com.koleksiyoner.api.requests.BaseListRequest;
+import com.koleksiyoner.api.requests.fabric.FabricListRequest;
 import com.koleksiyoner.api.requests.fabric.FabricRequest;
 import com.koleksiyoner.api.responses.fabric.FabricGroupByNameResponse;
 import com.koleksiyoner.api.responses.fabric.FabricResponse;
@@ -13,11 +14,11 @@ public interface FabricService {
 
     DataResult<FabricResponse> findById(FabricRequest fabricRequest);
 
-    DataResult<List<FabricGroupByNameResponse>> getFabricsGroupByName();
+    DataResult<List<FabricGroupByNameResponse>> getFabricsGroupByName(BaseListRequest baseListRequest);
 
     DataResult<List<FabricResponse>> createFabrics(List<FabricRequest> fabricRequests);
 
-    DataResult<List<FabricResponse>> findAllByName(FabricRequest fabricRequest);
+    DataResult<List<FabricResponse>> findAllByName(FabricListRequest fabricListRequest);
 
     DataResult<List<FabricResponse>> findAll(BaseListRequest baseListRequest);
 
