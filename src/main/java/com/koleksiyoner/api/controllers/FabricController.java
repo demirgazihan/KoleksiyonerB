@@ -1,5 +1,6 @@
 package com.koleksiyoner.api.controllers;
 
+import com.koleksiyoner.api.requests.BaseListRequest;
 import com.koleksiyoner.api.requests.fabric.FabricRequest;
 import com.koleksiyoner.api.responses.fabric.FabricGroupByNameResponse;
 import com.koleksiyoner.api.responses.fabric.FabricResponse;
@@ -20,15 +21,16 @@ public class FabricController {
 
     private final FabricService fabricService;
 
-    @PostMapping(FABRIC_CREATE)
-    public ResponseEntity<DataResult<List<FabricResponse>>> createFabrics(@RequestBody List<FabricRequest> fabricRequests) {
-        DataResult<List<FabricResponse>> result = fabricService.createFabrics(fabricRequests);
-        return new ResponseEntity<>(result, result.getHttpStatus());
-    }
+
 
     @GetMapping(FABRIC_FIND_GROUP_BY_NAME)
     public ResponseEntity<DataResult<List<FabricGroupByNameResponse>>> getFabricsGroupByName() {
         DataResult<List<FabricGroupByNameResponse>> result = fabricService.getFabricsGroupByName();
+        return new ResponseEntity<>(result, result.getHttpStatus());
+    }
+    @GetMapping(FABRIC_FIND_ALL)
+    public ResponseEntity<DataResult<List<FabricResponse>>> findAll(@RequestBody BaseListRequest baseListRequest) {
+        DataResult<List<FabricResponse>> result = fabricService.findAll(baseListRequest);
         return new ResponseEntity<>(result, result.getHttpStatus());
     }
 
@@ -39,8 +41,14 @@ public class FabricController {
     }
 
     @GetMapping(FABRIC_FIND_BY_ID)
-    public ResponseEntity<DataResult<FabricResponse>> findAll(@RequestBody FabricRequest fabricRequest) {
+    public ResponseEntity<DataResult<FabricResponse>> findById(@RequestBody FabricRequest fabricRequest) {
         DataResult<FabricResponse> result = fabricService.findById(fabricRequest);
+        return new ResponseEntity<>(result, result.getHttpStatus());
+    }
+
+    @PostMapping(FABRIC_CREATE)
+    public ResponseEntity<DataResult<List<FabricResponse>>> createFabrics(@RequestBody List<FabricRequest> fabricRequests) {
+        DataResult<List<FabricResponse>> result = fabricService.createFabrics(fabricRequests);
         return new ResponseEntity<>(result, result.getHttpStatus());
     }
 

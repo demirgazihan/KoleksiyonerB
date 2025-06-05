@@ -13,6 +13,7 @@ public class ApiEndpointConstants {
     public static final String FABRIC = MATERIAL + "/fabric";
     public static final String FABRIC_CREATE = "/create";
     public static final String FABRIC_FIND_GROUP_BY_NAME = "/findFabricsGroupByName";
+    public static final String FABRIC_FIND_ALL = "/findAll";
     public static final String FABRIC_FIND_ALL_BY_NAME = "/findAllByName";
     public static final String FABRIC_FIND_BY_ID = "/findById";
     public static final String FABRIC_CHANGED_E_STATUS = "/changeStatus";

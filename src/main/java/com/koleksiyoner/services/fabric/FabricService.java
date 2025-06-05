@@ -1,5 +1,6 @@
 package com.koleksiyoner.services.fabric;
 
+import com.koleksiyoner.api.requests.BaseListRequest;
 import com.koleksiyoner.api.requests.fabric.FabricRequest;
 import com.koleksiyoner.api.responses.fabric.FabricGroupByNameResponse;
 import com.koleksiyoner.api.responses.fabric.FabricResponse;
@@ -18,7 +19,7 @@ public interface FabricService {
 
     DataResult<List<FabricResponse>> findAllByName(FabricRequest fabricRequest);
 
-    DataResult<List<FabricResponse>> findAll();
+    DataResult<List<FabricResponse>> findAll(BaseListRequest baseListRequest);
 
     DataResult<List<FabricResponse>> changeFabricsEStatus(List<FabricRequest> fabricRequests);
 }
