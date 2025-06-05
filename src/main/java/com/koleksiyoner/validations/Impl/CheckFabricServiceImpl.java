@@ -27,7 +27,7 @@ public class CheckFabricServiceImpl implements CheckFabricService {
     }
 
     @Override
-    public void checkFabricExistsByCode(List<FabricRequest> fabricRequests) {
+    public void checkFabricsExistsByCode(List<FabricRequest> fabricRequests) {
         List<Fabric> fabrics = fabricRepository.findAll();
         List<Fabric> matchingCodes = fabrics.stream().filter(element ->
                 fabricRequests.stream().anyMatch(f -> f.getCode().equals(element.getCode()))).toList();

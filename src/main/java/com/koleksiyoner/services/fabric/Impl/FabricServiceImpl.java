@@ -35,6 +35,8 @@ public class FabricServiceImpl implements FabricService {
         return new SuccessDataResult<>(
                 prepareFabric(fabric),
                 HttpStatus.OK);
+
+
     }
 
     private FabricResponse prepareFabric(Fabric fabric) {
@@ -62,11 +64,10 @@ public class FabricServiceImpl implements FabricService {
 
     @Override
     public DataResult<List<FabricResponse>> createFabrics(List<FabricRequest> fabricRequests) {
-        checkFabricService.checkFabricExistsByCode(fabricRequests);
+        checkFabricService.checkFabricsExistsByCode(fabricRequests);
         List<Fabric> fabrics = new ArrayList<>();
-        fabricRequests.forEach(fabricRequest -> {
-            fabrics.add(modelMapperService.forRequest().map(fabricRequest, Fabric.class));
-        });
+        fabricRequests.forEach(fabricRequest -> fabrics.add(modelMapperService.forRequest().map(fabricRequest, Fabric.class)));
+        fabrics.forEach(fabric -> fabric.setEStatus(EStatus.ACTIVE));
         fabricRepository.saveAll(fabrics);
         return new SuccessDataResult<>(
                 null,
@@ -88,7 +89,10 @@ public class FabricServiceImpl implements FabricService {
 
     @Override
     public DataResult<List<FabricResponse>> changeFabricsEStatus(List<FabricRequest> fabricRequests) {
-        fabricRepository.setEStatus(fabricRequests.get(0).getId(), fabricRequests.get(0).getStatus().toUpperCase());
+        fabricRequests.forEach(fabricRequest -> {
+            checkFabricService.checkFindById(fabricRequest.getId());
+            fabricRepository.setEStatus(fabricRequest.getId(), fabricRequest.getStatus().toUpperCase());
+        });
         return new SuccessDataResult<>(
                 null,
                 HttpStatus.OK);

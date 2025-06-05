@@ -9,5 +9,5 @@ public interface CheckFabricService {
 
     Fabric checkFindById(Long id);
 
-    void checkFabricExistsByCode(List<FabricRequest> fabricRequests);
+    void checkFabricsExistsByCode(List<FabricRequest> fabricRequests);
 }
